@@ -9,9 +9,12 @@
 use std::collections::HashMap;
 
 pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
-    if nums.len() < 2 { panic!("Input array size must be > 2"); }
+    let size = nums.len();
 
-    let mut indices: HashMap<&i32, usize> = HashMap::with_capacity(2);
+    if size < 2 { panic!("Input array size must be > 2"); }
+
+    // Saves time resizing at runtime, at the cost of higher memory consumption
+    let mut indices: HashMap<&i32, usize> = HashMap::with_capacity(size);
 
     for (i, n) in nums.iter().enumerate() {
         let difference = target - n;
@@ -53,5 +56,12 @@ mod tests {
         let nums = vec![-1, -2, 9];
         let output = two_sum(nums, 8);
         assert_eq!(output, vec![0, 2]);
+    }
+
+    #[test]
+    fn fifth() {
+        let nums = vec![2, 13, 11, 7];
+        let output = two_sum(nums, 9);
+        assert_eq!(output, vec![0, 3]);
     }
 }

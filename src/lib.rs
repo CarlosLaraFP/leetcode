@@ -1,1 +1,1 @@
-mod indexed;
+mod algorithms;
