@@ -4,17 +4,23 @@
 ///
 /// You can return the answer in any order.
 ///
+/// Time complexity: O(N), Space complexity: O(1)
+///
+use std::collections::HashMap;
+
 pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
-    let size = nums.len();
-    if size < 2 { panic!("Input array size must be > 2"); }
-    for i in 0..size {
-        for j in 0..size {
-            if i != j && nums[i] + nums[j] == target {
-                return vec![i as i32, j as i32];
-            }
+    if nums.len() < 2 { panic!("Input array size must be > 2"); }
+
+    let mut indices: HashMap<&i32, usize> = HashMap::with_capacity(2);
+
+    for (i, n) in nums.iter().enumerate() {
+        let difference = target - n;
+        if let Some(&j) = indices.get(&difference) {
+            return vec![j as i32, i as i32];
         }
+        indices.insert(n, i);
     }
-    Vec::new()
+    vec![]
 }
 
 #[cfg(test)]
