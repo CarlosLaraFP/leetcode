@@ -2,8 +2,14 @@
 ///
 pub fn is_palindrome(x: i32) -> bool {
     let input = x.to_string();
-    let reversed: String = input.chars().rev().collect();
-    reversed == input
+    let clone = x.to_string();
+    let mut reversed = clone.chars().rev();
+    for c in input.chars() {
+        if c != reversed.next().unwrap() {
+            return false;
+        }
+    }
+    true
 }
 
 
