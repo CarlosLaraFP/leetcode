@@ -16,17 +16,38 @@
 
     Solution:
 
-    Space complexity: O(1)
+    Space complexity: O(N)
     Time complexity: O(N)
 
  */
-pub fn sorted_squares(mut nums: Vec<i32>) -> Vec<i32> {
+pub fn sorted_squares(nums: Vec<i32>) -> Vec<i32> {
     // nums is moved into the function by the caller
-    nums.iter_mut().for_each(|n| *n = n.pow(2));
 
-    nums.sort(); 
+    let n = nums.len();
+
+    let mut result = vec![0; n];
+    let (mut left, mut right) = (0 as usize, n - 1);
+    let mut index = n - 1;
+
+    while left <= right { // the overlap is the last element of nums
+        if nums[left].abs() >= nums[right].abs() {
+            // left goes at the end, which is the current index
+            result[index] = nums[left].pow(2);
+            left += 1;
+        }
+        else {
+            result[index] = nums[right].pow(2);
+            right -= 1;
+        }
+        // prevents unsigned integer type usize from becoming negative at the end
+        if index > 0 {
+            index -= 1;
+        }
+
+        //println!("{:?}", result);
+    }
     
-    nums // moved out of the function into the caller
+    result // moved out of the function into the caller
 }
 
 #[cfg(test)]
@@ -37,5 +58,17 @@ mod tests {
     fn first() {
         let nums = vec![-4, 0, 1, 3, 8];
         assert_eq!(vec![0, 1, 9, 16, 64], sorted_squares(nums));
+    }
+
+    #[test]
+    fn second() {
+        let nums = vec![-7,-3,2,3,11];
+        assert_eq!(vec![4,9,9,49,121], sorted_squares(nums));
+    }
+
+    #[test]
+    fn third() {
+        let nums = vec![2];
+        assert_eq!(vec![4], sorted_squares(nums));
     }
 }
